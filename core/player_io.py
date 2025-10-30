@@ -5,5 +5,5 @@ def is_valid_input(inp: str) -> bool:
 def ask_player_action() -> str:
     choice = ''
     while not is_valid_input(choice):
-        choice = input("Enter you Choice: 'H' or 'S'\nH = HIT, continue drawing\nS = STAND, stopping: ").upper()
+        choice = input("Enter your choice: 'H' or 'S'\nH = HIT, continue drawing\nS = STAND, stopping: ").upper()
     return choice
