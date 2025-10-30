@@ -1,6 +1,6 @@
 from random import randrange
 
-__all__ = ["build_standard_deck", "shuffle_by_suit"]
+__all__ = ["build_standard_deck", "shuffle_by_suit", "VALUE_OF_RANK"]
 
 VALUE_OF_RANK = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
                  '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10, 'A': 1}
@@ -13,7 +13,7 @@ def create_card(rank: str, suite: str) -> dict:
         raise Exception("Invalid rank!!!")
     if suite not in SUITES_LIST:
         raise Exception("Invalid suite!!!")
-    return {"rank": rank, "suite": suite, "value": VALUE_OF_RANK[rank]}
+    return {"rank": rank, "suite": suite}
 
 
 def build_standard_deck() -> list[dict]:
@@ -21,25 +21,22 @@ def build_standard_deck() -> list[dict]:
 
 
 def is_valid_rand(deck: list[dict], i: int, j: int) -> bool:
-    div_num = SUITES_LIST[deck[i]["suite"]]
+    div_num = SUITES_LIST[deck[i]["suite"]]     # The values of SUITE_LIST are the division number we will check bellow.
     return i != j and j % div_num == 0
 
 
 def get_twe_rand(deck: list[dict]) -> tuple[int, int]:
     size = len(deck)
     i = randrange(size)
-    while True:
+    j = i
+    while not is_valid_rand(deck, i, j):
         j = randrange(size)
-        if is_valid_rand(deck, i, j):
-            break
     return i, j
 
 
 def shuffle_by_suit(deck: list[dict], swaps: int = 5000) -> list[dict]:
-    for _ in range(5000):
+    for _ in range(swaps):
         i, j = get_twe_rand(deck)
         deck[i], deck[j] = deck[j], deck[i]
     return deck
 
-
-print(shuffle_by_suit(build_standard_deck()))
