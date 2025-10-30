@@ -2,8 +2,21 @@ from core.deck import VALUE_OF_RANK
 from core.player_io import *
 
 
+def calc_as_value(calc_sum: int, as_count: int) -> int:
+    if as_count == 0 or calc_sum + as_count + 10 > 21:
+        return 0
+    else:
+        return 10
+
 def calculate_hand_value(hand: list[dict]) -> int:
-    return sum(map(lambda x: VALUE_OF_RANK[x["rank"]], hand))
+    as_count = len(list(filter(lambda x: x["rank"] == "A", hand)))
+    print(hand)
+    calc_sum = sum(map(lambda x: VALUE_OF_RANK[x["rank"]], hand))
+    if calc_sum >= 21:
+        return calc_sum
+    else:
+        return calc_sum + calc_as_value(calc_sum-as_count, as_count)
+
 
 
 def card_draw(deck: list[dict], player: dict) -> bool:
